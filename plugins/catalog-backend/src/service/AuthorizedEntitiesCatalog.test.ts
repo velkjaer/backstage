@@ -16,6 +16,7 @@
 
 import { Entity } from '@backstage/catalog-model';
 import { NotAllowedError } from '@backstage/errors';
+import { RESOURCE_TYPE_CATALOG_ENTITY } from '@backstage/plugin-catalog-common';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
 import {
   createConditionTransformer,
@@ -38,7 +39,12 @@ describe('AuthorizedEntitiesCatalog', () => {
   };
 
   const createCatalog = (
-    ...rules: PermissionRule<Entity, EntitiesSearchFilter, unknown[]>[]
+    ...rules: PermissionRule<
+      typeof RESOURCE_TYPE_CATALOG_ENTITY,
+      Entity,
+      EntitiesSearchFilter,
+      unknown[]
+    >[]
   ) =>
     new AuthorizedEntitiesCatalog(
       fakeCatalog,

@@ -15,6 +15,7 @@
  */
 
 import { Entity } from '@backstage/catalog-model';
+import { RESOURCE_TYPE_CATALOG_ENTITY } from '@backstage/plugin-catalog-common';
 import { makeCreatePermissionRule } from '@backstage/plugin-permission-node';
 import { EntitiesSearchFilter } from '../../catalog/types';
 
@@ -26,6 +27,7 @@ import { EntitiesSearchFilter } from '../../catalog/types';
  * @alpha
  */
 export const createCatalogPermissionRule = makeCreatePermissionRule<
+  typeof RESOURCE_TYPE_CATALOG_ENTITY,
   Entity,
   EntitiesSearchFilter
 >();

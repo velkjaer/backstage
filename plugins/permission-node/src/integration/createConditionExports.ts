@@ -19,6 +19,7 @@ import {
   PermissionCondition,
   PermissionCriteria,
   ConditionalPolicyDecision,
+  ResourcePermission,
 } from '@backstage/plugin-permission-common';
 import { PermissionRule } from '../types';
 import { createConditionFactory } from './createConditionFactory';
@@ -30,11 +31,12 @@ import { createConditionFactory } from './createConditionFactory';
  * @public
  */
 export type Condition<TRule> = TRule extends PermissionRule<
+  infer TResourceType,
   any,
   any,
   infer TParams
 >
-  ? (...params: TParams) => PermissionCondition<TParams>
+  ? (...params: TParams) => PermissionCondition<TResourceType, TParams>
   : never;
 
 /**
@@ -44,38 +46,43 @@ export type Condition<TRule> = TRule extends PermissionRule<
  * @public
  */
 export type Conditions<
-  TRules extends Record<string, PermissionRule<any, any>>,
+  TRules extends Record<string, PermissionRule<any, any, any>>,
 > = {
   [Name in keyof TRules]: Condition<TRules[Name]>;
 };
 
 /**
- * Creates the recommended condition-related exports for a given plugin based on the built-in
- * {@link PermissionRule}s it supports.
+ * Creates the recommended condition-related exports for a given plugin based on
+ * the built-in {@link PermissionRule}s it supports.
  *
  * @remarks
  *
  * The function returns a `conditions` object containing a
- * {@link @backstage/plugin-permission-common#PermissionCondition} factory for each of the
- * supplied {@link PermissionRule}s, along with a `createConditions` function which builds the
- * wrapper object needed to enclose conditions when authoring {@link PermissionPolicy} implementations.
+ * {@link @backstage/plugin-permission-common#PermissionCondition} factory for
+ * each of the supplied {@link PermissionRule}s, along with a
+ * `createConditionalDecision` function which builds the wrapper object needed
+ * to enclose conditions when authoring {@link PermissionPolicy}
+ * implementations.
  *
- * Plugin authors should generally call this method with all the built-in {@link PermissionRule}s
- * the plugin supports, and export the resulting `conditions` object and `createConditions`
- * function so that they can be used by {@link PermissionPolicy} authors.
+ * Plugin authors should generally call this method with all the built-in
+ * {@link PermissionRule}s the plugin supports, and export the resulting
+ * `conditions` object and `createConditionalDecision` function so that they can
+ * be used by {@link PermissionPolicy} authors.
  *
  * @public
  */
 export const createConditionExports = <
+  TResourceType extends string,
   TResource,
-  TRules extends Record<string, PermissionRule<TResource, any>>,
+  TRules extends Record<string, PermissionRule<TResourceType, TResource, any>>,
 >(options: {
   pluginId: string;
-  resourceType: string;
+  resourceType: TResourceType;
   rules: TRules;
 }): {
   conditions: Conditions<TRules>;
-  createPolicyDecision: (
+  createConditionalDecision: (
+    permission: ResourcePermission<TResourceType>,
     conditions: PermissionCriteria<PermissionCondition>,
   ) => ConditionalPolicyDecision;
 } => {
@@ -89,7 +96,8 @@ export const createConditionExports = <
       }),
       {} as Conditions<TRules>,
     ),
-    createPolicyDecision: (
+    createConditionalDecision: (
+      _permission: ResourcePermission<TResourceType>,
       conditions: PermissionCriteria<PermissionCondition>,
     ) => ({
       result: AuthorizeResult.CONDITIONAL,

@@ -142,7 +142,10 @@ export type PolicyDecision =
  * claims from a identity token.
  * @public
  */
-export type PermissionCondition<TParams extends unknown[] = unknown[]> = {
+export type PermissionCondition<
+  _TResourceType extends string = string,
+  TParams extends unknown[] = unknown[],
+> = {
   rule: string;
   params: TParams;
 };

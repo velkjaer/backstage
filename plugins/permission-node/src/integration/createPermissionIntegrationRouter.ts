@@ -99,10 +99,10 @@ export type ApplyConditionsResponse = {
   items: ApplyConditionsResponseEntry[];
 };
 
-const applyConditions = <TResource>(
-  criteria: PermissionCriteria<PermissionCondition>,
+const applyConditions = <TResourceType extends string, TResource>(
+  criteria: PermissionCriteria<PermissionCondition<TResourceType>>,
   resource: TResource | undefined,
-  getRule: (name: string) => PermissionRule<TResource, unknown>,
+  getRule: (name: string) => PermissionRule<TResourceType, TResource, unknown>,
 ): boolean => {
   // If resource was not found, deny. This avoids leaking information from the
   // apply-conditions API which would allow a user to differentiate between
@@ -161,9 +161,12 @@ const applyConditions = <TResource>(
  *
  * @public
  */
-export const createPermissionIntegrationRouter = <TResource>(options: {
+export const createPermissionIntegrationRouter = <
+  TResourceType extends string,
+  TResource,
+>(options: {
   resourceType: string;
-  rules: PermissionRule<TResource, any>[];
+  rules: PermissionRule<TResourceType, TResource, any>[];
   getResources: (
     resourceRefs: string[],
   ) => Promise<Array<TResource | undefined>>;

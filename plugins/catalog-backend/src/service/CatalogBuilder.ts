@@ -145,6 +145,7 @@ export class CatalogBuilder {
     });
   private locationAnalyzer: LocationAnalyzer | undefined = undefined;
   private permissionRules: PermissionRule<
+    typeof RESOURCE_TYPE_CATALOG_ENTITY,
     Entity,
     EntitiesSearchFilter,
     unknown[]
@@ -395,6 +396,7 @@ export class CatalogBuilder {
    */
   addPermissionRules(
     ...permissionRules: PermissionRule<
+      typeof RESOURCE_TYPE_CATALOG_ENTITY,
       Entity,
       EntitiesSearchFilter,
       unknown[]

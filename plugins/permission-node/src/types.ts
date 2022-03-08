@@ -33,6 +33,7 @@ import type { PermissionCriteria } from '@backstage/plugin-permission-common';
  * @public
  */
 export type PermissionRule<
+  _TResourceType extends string,
   TResource,
   TQuery,
   TParams extends unknown[] = unknown[],
