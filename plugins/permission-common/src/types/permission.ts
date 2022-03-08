@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import { AuthorizeQuery, AuthorizeDecision } from './api';
+import {
+  AuthorizeDecision,
+  AuthorizeQuery,
+  PolicyDecision,
+  PolicyQuery,
+} from './api';
 
 /**
  * The attributes related to a given permission; these should be generic and widely applicable to
@@ -89,6 +94,11 @@ export interface PermissionAuthorizer {
     queries: AuthorizeQuery[],
     options?: AuthorizeRequestOptions,
   ): Promise<AuthorizeDecision[]>;
+
+  policyDecision(
+    queries: PolicyQuery<ResourcePermission>[],
+    options?: AuthorizeRequestOptions,
+  ): Promise<PolicyDecision[]>;
 }
 
 /**
