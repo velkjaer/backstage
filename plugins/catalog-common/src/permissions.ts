@@ -30,11 +30,9 @@ export const RESOURCE_TYPE_CATALOG_ENTITY = 'catalog-entity';
 /**
  * Convenience type for catalog entity
  * {@link @backstage/plugin-permission-common#ResourcePermission}s.
- * @alpha
+ * @public
  */
-export type CatalogEntityPermission = ResourcePermission<
-  typeof RESOURCE_TYPE_CATALOG_ENTITY
->;
+export type CatalogEntityPermission = ResourcePermission<'catalog-entity'>;
 
 /**
  * This permission is used to authorize actions that involve reading one or more

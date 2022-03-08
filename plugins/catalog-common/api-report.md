@@ -29,10 +29,8 @@ export interface CatalogEntityDocument extends IndexableDocument {
   type: string;
 }
 
-// @alpha
-export type CatalogEntityPermission = ResourcePermission<
-  typeof RESOURCE_TYPE_CATALOG_ENTITY
->;
+// @public
+export type CatalogEntityPermission = ResourcePermission<'catalog-entity'>;
 
 // @alpha
 export const catalogEntityReadPermission: ResourcePermission<'catalog-entity'>;
