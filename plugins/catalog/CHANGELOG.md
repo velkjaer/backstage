@@ -1,5 +1,11 @@
 # @backstage/plugin-catalog
 
+## 0.10.0-next.1
+
+### Patch Changes
+
+- 9a06d18385: Added an `allowedKinds` option to `CatalogKindHeader` to limit entity kinds available in the dropdown.
+
 ## 0.10.0-next.0
 
 ### Minor Changes

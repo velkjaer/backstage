@@ -1,5 +1,11 @@
 # @backstage/plugin-airbrake
 
+## 0.3.2-next.1
+
+### Patch Changes
+
+- c5a462bff1: Fix a bug where API calls were being made and errors were being added to the snack bar when no project ID was present. This is a common use case for components that haven't added the Airbrake plugin annotation to their `catalog-info.yaml`.
+
 ## 0.3.2-next.0
 
 ### Patch Changes
